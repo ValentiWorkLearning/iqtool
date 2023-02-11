@@ -90,3 +90,10 @@ Usage: **python iqplot.py *filename***
 ### FFT Width
 * When displaying a spectrogram plot the FFT width should be set using the option **-fw FFTWIDTH**.
 * The overlap between each FFT in the spectrogram is set to FFTWIDTH/10.
+
+
+## Generation sample
+```shell
+python iqgen.py --tone=8000 --sampleRate=2048000 --plot --filename=test_data.csv --samples=8192
+python iqgen.py --tone=8000 --sampleRate=2048000 --filename=test_data.csv --format=uint8 --plot --samples=8192
+```

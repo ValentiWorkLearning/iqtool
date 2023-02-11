@@ -109,7 +109,7 @@ if __name__ == '__main__':
     
     cliParser.add_argument('-f', '--format', type=str, 
         help='Output format (default=int16)', 
-        choices=["int8", "int16", "int32", "uint8", "uint16", "uint32", 
+        choices=["uint8","int8", "int16", "int32", "uint8", "uint16", "uint32", 
         "float16", "float32", "float64"],
         default='int16')
                                 

@@ -62,7 +62,6 @@ def complexToSingleArray(array, orderIQ):
     else:
         output[1::2] = realArray
         output[0::2] = imagArray
-        
     return output
 
 if __name__ == '__main__':
@@ -71,7 +70,7 @@ if __name__ == '__main__':
     cliParser = argparse.ArgumentParser(description='Generates quadrature IQ samples')
     
     #The number of samples is the only compulsory option
-    cliParser.add_argument('samples', type=int, help='number of output samples')
+    cliParser.add_argument('-s', '--samples', type=int, help='number of output samples')
     
     #These options are mutually exclusive, i.e. only one may be picked
     outTypeGroup = cliParser.add_mutually_exclusive_group()
@@ -120,7 +119,7 @@ if __name__ == '__main__':
             amplitude = ((2.0**31) - 1)
         elif args.format == 'int8':
             amplitude = ((2.0**7) - 1)
-        elif args.format == 'float16' or args.format == 'float32' or args.format == 'float64':
+        elif args.format == 'float16' or args.format == 'float32' or args.format == 'float64' or args.format =='uint8':
             amplitude = 1.0
         else:
             cliParser.error('Output format must be [int8 | int16 | int32 | float16 | float32 | float64]')          
@@ -158,7 +157,12 @@ if __name__ == '__main__':
     elif args.format == 'float32':
         output = complexToSingleArray(output, not args.orderQI).astype(np.float32) 
     elif args.format == 'float64':
-        output = complexToSingleArray(output, not args.orderQI).astype(np.float64)     
+        output = complexToSingleArray(output, not args.orderQI).astype(np.float64)
+    elif args.format == 'uint8':
+        output = complexToSingleArray(output,not args.orderQI)
+        output = output + 127.4
+        output = output.astype(np.uint8)
+
     #Add the data format to the filename
     filename += '_' + str(args.format) 
         
@@ -185,8 +189,8 @@ if __name__ == '__main__':
         
     #Open the output file and write the data to it      
     with open(filename, 'wb') as f:
-        output.tofile(f)
-        
+        # output.tofile(f)
+        np.savetxt("text_version_"+filename,output, fmt='%d')
     #If plotting is enabled then generate a plot
     if args.plot:
         if args.orderQI:
